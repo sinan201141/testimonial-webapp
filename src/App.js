@@ -10,13 +10,16 @@ function App() {
   return (
     <div className="App">
       <Header />
-      <Routes>
-        <Route path="/" element={<LandingPage />} />
-        <Route path="/create" element={<CreateTestimonial />} />
-        <Route path="/testimonials" element={<ViewTestimonials />} />
-      </Routes>
+      <main className="main-content">
+        <Routes>
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/create" element={<CreateTestimonial />} />
+          <Route path="/testimonials" element={<ViewTestimonials />} />
+        </Routes>
+      </main>
     </div>
   );
 }
+
 
 export default App;

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import "../TestimonialStyles.css";
 
 const TestimonialForm = () => {
@@ -7,8 +8,11 @@ const TestimonialForm = () => {
     name: "",
     message: "",
     rating: "",
-    image: "",
+    profilePic: "",
   });
+
+  const [showSuccess, setShowSuccess] = useState(false);
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
@@ -18,8 +22,13 @@ const TestimonialForm = () => {
     e.preventDefault();
     try {
       await axios.post("http://localhost:5000/api/testimonial", formData);
-      alert("Testimonial submitted!");
-      setFormData({ name: "", message: "", rating: "", image: "" });
+      setFormData({ name: "", message: "", rating: "", profilePic: "" });
+      setShowSuccess(true);
+
+      setTimeout(() => {
+        setShowSuccess(false);
+        navigate("/testimonials");
+      }, 2000);
     } catch (err) {
       console.error("Error submitting testimonial:", err);
     }
@@ -29,6 +38,13 @@ const TestimonialForm = () => {
     <div className="page-container">
       <div className="card">
         <h2 className="title">Submit Your Testimonial</h2>
+
+        {showSuccess && (
+          <div className="success-banner">
+            ✅ Testimonial submitted successfully! Redirecting...
+          </div>
+        )}
+
         <form onSubmit={handleSubmit}>
           <input
             id="name"
@@ -55,9 +71,9 @@ const TestimonialForm = () => {
             required
           />
           <input
-            id="image"
-            placeholder="Image URL"
-            value={formData.image}
+            id="profilePic"
+            placeholder="Profile Picture URL"
+            value={formData.profilePic}
             onChange={handleChange}
           />
           <button type="submit">Submit</button>
